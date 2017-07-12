@@ -8,6 +8,9 @@ cache:
 python:
   - "2.7"
 
+install:
+      - pip install validate_email
+
 addons:
   apt:
 # only add the two lines below if you need wkhtmltopdf for your tests
@@ -20,9 +23,7 @@ addons:
       - python-lxml  # because pip installation is slow
       - python-simplejson
       - python-serial
-      - python-yaml
-      - unixodbc-dev
-      - python-mysqldb    
+      - python-yaml  
 #     Search your packages here:
 #       https://github.com/travis-ci/apt-package-whitelist/blob/master/ubuntu-precise
 #      - wkhtmltopdf  # only add if needed and check the before_install section below
