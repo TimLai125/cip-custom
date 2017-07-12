@@ -8,9 +8,6 @@ cache:
 python:
   - "2.7"
 
-install:
-      - pip install validate_email
-
 addons:
   apt:
 # only add the two lines below if you need wkhtmltopdf for your tests
@@ -80,6 +77,7 @@ virtualenv:
 #  - gem install compass --pre
 
 install:
+  - pip install validate_email  
   - git clone --depth=1 https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
   - travis_install_nightly
