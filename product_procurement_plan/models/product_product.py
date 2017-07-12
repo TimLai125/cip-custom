@@ -41,7 +41,6 @@ class ProductProduct(models.Model):
         digits=dp.get_precision('Product Unit of Measure'),
     )
 
-
     @api.multi
     def _compute_qty(self):
         for prod in self:
@@ -56,5 +55,6 @@ class ProductProduct(models.Model):
             else:
                 proc_lt = prod.proc_lt_calc
             prod.qty_suggested = avg_qty * proc_lt
-            prod.qty_variance = prod.qty_available + prod.incoming_qty - \
-                                prod.qty_suggested
+            prod.qty_variance = prod.qty_available \
+                                + prod.incoming_qty \
+                                - prod.qty_suggested

@@ -9,7 +9,7 @@
     'category': 'Product',
     'license': "LGPL-3",
     'description': """
-Remove the internal reference from product's description in sale orders and invoices.
+# Remove the internal reference from product's description in sale orders and invoices.
 """,
     'depends': [
         'product',

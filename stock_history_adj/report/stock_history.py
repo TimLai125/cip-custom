@@ -7,14 +7,13 @@ from odoo import models, fields, api, tools
 
 class StockHistory(models.Model):
     _inherit = 'stock.history'
-    
+
     product_type = fields.Selection([
         ('consu', 'Consumable'),
         ('service', 'Service'),
         ('product', 'Stockable Product')],
         string='Product Type',
     )
-
 
     @api.model_cr
     def init(self):

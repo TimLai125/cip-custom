@@ -6,7 +6,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from collections import Counter
 
-from odoo import models, fields, api
+from odoo import models, fields
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT,\
     DEFAULT_SERVER_DATETIME_FORMAT
 
@@ -20,20 +20,19 @@ class ProductProcInfoCompute(models.TransientModel):
     clear_qty_adj = fields.Boolean('Clear "Adjusted Qty" field')
     procure_lt = fields.Boolean('Update Procurement Lead Time')
 
-
     def _get_loc_param(self, usage):
         loc_obj = self.env['stock.location']
-        locs = loc_obj.search([('usage','in',usage)])
+        locs = loc_obj.search([('usage', 'in', usage)])
         if len(locs) == 1:
-            return '= ' + `locs.id`
+            return '= ' + repr(locs.id)
         else:
-            return 'IN ' + `tuple([l.id for l in locs])`
+            return 'IN ' + repr(tuple([l.id for l in locs]))
 
     def _get_prod_ids_param(self, prod_ids):
         if len(prod_ids) == 1:
-            return '= ' + `prod_ids[0]`
+            return '= ' + repr(prod_ids[0])
         else:
-            return 'IN ' + `tuple(prod_ids)`
+            return 'IN ' + repr(tuple(prod_ids))
 
     def _get_qty_dict(self, params):
         res = {}
@@ -218,13 +217,13 @@ class ProductProcInfoCompute(models.TransientModel):
         # work on buy_prod_dict and update procurement lead time in db
         loc_obj = self.env['stock.location']
         int_loc_ids = [l.id for l in loc_obj.search(
-            [('usage','=','internal')])]
+            [('usage', '=', 'internal')])]
         supp_loc_ids = [l.id for l in loc_obj.search(
-            [('usage','=','supplier')])]
+            [('usage', '=', 'supplier')])]
         for k in buy_prod_dict:
             lt_accum = 0.0
             num_recs = 0
-            if buy_prod_dict[k]['type'] <> 'service':
+            if buy_prod_dict[k]['type'] != 'service':
                 moves = self.env['stock.move'].search(
                     [('location_id', 'in', supp_loc_ids),
                      ('location_dest_id', 'in', int_loc_ids),
@@ -309,7 +308,7 @@ class ProductProcInfoCompute(models.TransientModel):
         if self._context.get('active_ids', False):
             prod_ids = self._context['active_ids']
         else:
-            prod_ids = [p.id for p in prod_obj.search([('active','=',True)])]
+            prod_ids = [p.id for p in prod_obj.search([('active', '=', True)])]
         return prod_obj.browse(prod_ids)
 
     def _get_sorted_parent_products(self):
@@ -341,7 +340,7 @@ class ProductProcInfoCompute(models.TransientModel):
                 # product should be appended to sorted_list
                 # otherwise, the product should be put to the end of
                 # parent_products for next try
-                if ok_flag == True:
+                if ok_flag:
                     sorted_parent_products.append(prod)
                 else:
                     bom_products.append(prod)

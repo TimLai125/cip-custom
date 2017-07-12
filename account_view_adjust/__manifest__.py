@@ -3,7 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 {
     'name': 'Adjustments on Accounting Views',
-    'summary':"""""",
+    'summary': """""",
     'version': '10.0.1.0.0',
     'category': 'Accounting',
     'description': """
