@@ -118,7 +118,24 @@ class ResPartner(models.Model):
     @api.multi
     def cron_reset_policy_pricelist(self):
         # FIXME add date_range
+        today = fields.Date.context_today(self)
+        last_year = fields.Date.to_string(
+            fields.Date.from_string(today) + relativedelta(
+                years=-1,
+                day=1,
+                month=1
+            )
+        )
         partners = self.env['res.partner']\
             .sudo().search([('customer','=', True)])
-        partners.reset_partner_pricelist()
+        for partner in partners:
+            date_range = self.env['date.range'].search(
+                [('active', '=', True),
+                 ('date_start', '>=', last_year),
+                 ('date_end', '<=', last_year),
+                 ('is_fiscal_year', '=', True),
+                 ('company_id', '=', partner.company_id.id)], limit=1
+            )
+            if date_range:
+                partner.reset_partner_pricelist(date_range, partner)
         return True
