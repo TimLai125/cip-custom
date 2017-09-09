@@ -21,6 +21,15 @@ class SaleOrderLine(models.Model):
         currency_field='company_currency_id',
         string='Base Amount',
     )
+    mrp = fields.Float(
+        default=10000,
+    )
+
+
+    @api.onchange('discount', 'mrp')
+    def _recalculate_price_unit(self):
+        print "run"
+        self.price_unit = self.mrp - self.discount
 
 
     @api.multi
